@@ -1,0 +1,8 @@
+ @font-face {
+   font-family: GhostOfTheWildWest;
+   src: url('GhostOfTheWildWest.ttf');
+ }
+
+h1, h2, h3, p {
+  font-family: GhostOfTheWildWest, serif;
+}
