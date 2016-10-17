@@ -31,20 +31,20 @@ var hangman = {
             '<h2>YOU WIN!</h2>';
         document.onkeyup = function () {
             hangman.gameDisplay();
-            playGame();
+            start();
         };
     },
     endGameLose: function () {
         document.getElementById('win-lose').innerHTML =
-            '</p>' + '<h2>YOU LOSE!</h2>';
+            '<h2>YOU LOSE!</h2>';
         document.onkeyup = function () {
             hangman.gameDisplay();
-            playGame();
+            start();
         };
     }
 };
 
-function playGame() {
+function start() {
     hangman.gameDisplay();
 
     var randomWord = hangman.wordBank[
@@ -52,31 +52,29 @@ function playGame() {
         ],
         placeholderWord = [],
         lettersUsed = [],
-        numberGuessed = 0,
         numIncorrectGuesses = 0;
 
     // write blank word
     for (var i = 0; i < randomWord.length; i++) {
         placeholderWord.push('__');
     }
-    hangman.styleSpace(placeholderWord.join(' '));
+    hangman.styleSpace(placeholderWord.join('  '));
 
     hangman.stats(hangman.wins, hangman.losses, numIncorrectGuesses, lettersUsed);
 
     document.onkeyup = function (event) {
         var input = String.fromCharCode(event.keyCode).toLowerCase();
 
-        lettersUsed.push(input.toUpperCase());
-
-        if (randomWord.indexOf(input) != -1) {
+        if (randomWord.indexOf(input) !== -1) {
             for (var i = 0; i < randomWord.length; i++) {
                 if (randomWord[i] === input) {
-                    placeholderWord[i] = input.toUpperCase();
+                    placeholderWord[i] = input;
                 };
-            }
-            hangman.styleSpace(placeholderWord.join(' '));
-        } else {
-          numIncorrectGuesses++;
+            };
+            hangman.styleSpace(placeholderWord.join('  '));
+        } else if (lettersUsed.indexOf(input) === -1) {
+            lettersUsed.push(input);
+            numIncorrectGuesses++;
         };
 
         hangman.stats(hangman.wins, hangman.losses, numIncorrectGuesses, lettersUsed);
@@ -84,15 +82,15 @@ function playGame() {
         if (placeholderWord.join('').toLowerCase() === randomWord) {
             hangman.wins++;
             hangman.endGameWin();
-        }
+        };
 
         if ((numIncorrectGuesses) >= hangman.chances) {
             hangman.losses++;
             hangman.endGameLose();
-        }
+        };
     };
 }
 
 document.onkeyup = function () {
-    playGame();
+    start();
 };
