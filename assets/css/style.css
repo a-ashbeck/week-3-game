@@ -1,8 +1,20 @@
- @font-face {
+ /*@font-face {
    font-family: GhostOfTheWildWest;
    src: url('GhostOfTheWildWest.ttf');
  }
 
 h1, h2, h3, p {
   font-family: GhostOfTheWildWest, serif;
+}*/
+
+/*.game-head {
+  font-size: 46px;
+}*/
+
+.jumbotron {
+  background-color: #e95420;
 }
+
+/*.jumbotron h1 {
+  font-size: 6em;
+}*/
