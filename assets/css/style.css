@@ -1,20 +1,22 @@
- /*@font-face {
-   font-family: GhostOfTheWildWest;
-   src: url('GhostOfTheWildWest.ttf');
- }
+@font-face {
+ font-family: NASHVILL;
+ src: url('NASHVILL.ttf');
+}
 
-h1, h2, h3, p {
-  font-family: GhostOfTheWildWest, serif;
-}*/
+body {
+  background-image: url(../images/Charles_Marion_Russell_–_Smoke_of_a_.45_–_Google_Art_Project.jpg);
+}
 
-/*.game-head {
-  font-size: 46px;
-}*/
+h1, h2, h3, .lead {
+  font-family: NASHVILL, serif;
+}
 
 .jumbotron {
   background-color: #e95420;
+  overflow: scroll;
 }
 
-/*.jumbotron h1 {
-  font-size: 6em;
-}*/
+.console {
+  background-color: white;
+  padding: 10px;
+}

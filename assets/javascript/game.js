@@ -5,7 +5,9 @@ var hangman = {
     wordBank: [
             'cowboy', 'western', 'wildbill', 'billythekid', 'winchester',
             'horse', 'revolver', 'saloon', 'saddle', 'tombstone', 'noose',
-            'gallows', 'boots', 'hat', 'ranch', 'cattle', 'mule'
+            'gallows', 'boots', 'hat', 'ranch', 'cattle', 'mule', 'wyattearp',
+            'buffalobill', 'ponyexpress', 'jessejames', 'whip', 'highnoon',
+            'gunfight'
     ],
     idList: [
             'wins', 'losses', 'chances', 'letters-used',
