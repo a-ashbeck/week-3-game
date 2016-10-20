@@ -12,11 +12,23 @@ h1, h2, h3, .lead {
 }
 
 .jumbotron {
-  background-color: #e95420;
-  overflow: scroll;
+  background-color: brown;
 }
 
 .console {
   background-color: white;
+  padding: 20px;
+  border-radius: 25%;
+}
+
+.pop-up {
+  background-color: brown;
   padding: 10px;
+  color: gold;
+  border-radius: 40%;
+}
+
+#win-lose {
+  padding: 10px;
+  margin: 4px;
 }

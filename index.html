@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" integrity="sha384-pVJelSCJ58Og1XDc2E95RVYHZDPb9AVyXsI8NoVpB2xmtxoZKJePbMfE4mlXw7BJ" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-  <script type="text/javascript" src="assets/javascript/game.js"></script>
+  <script type="text/javascript" src="assets/javascript/game2.js"></script>
   <title>Hangman</title>
 </head>
 <body>
@@ -21,12 +21,22 @@
       </div>
 
       <section class="console col-md-4 col-sm-4 col-xs-12">
-        <h3 id="instructions">
+        <h3 class="text-center">
           Press any key to get started!
         </h3>
 
         <div id="game">
+          <p class="text-center" id="wins"></p>
 
+          <p class="text-center" id="losses"></p>
+
+          <p class="text-center" id="chances"></p>
+
+          <p class="text-center" id="letters-used"></p>
+
+          <p class="text-center" id="guess-word"></p>
+
+          <h2 class="pop-up text-center" id="win-lose"></p>
         </div>
       </section>
 
@@ -34,5 +44,13 @@
       </div>
     </div>
   </div>
+
+  <!-- <audio id="first-song">
+    <source src="assets/audio/1.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="second-song">
+    <source src="assets/audio/2.mp3" type="audio/mpeg"> -->
+  </audio>
 </body>
 </html>
