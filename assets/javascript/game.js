@@ -3,142 +3,136 @@ var hangman = {
     wins: 0,
     losses: 0,
     wordBank: [
-            'cowboy', 'western', 'wildbill', 'billythekid', 'winchester',
-            'horse', 'revolver', 'saloon', 'saddle', 'tombstone', 'noose',
-            'gallows', 'boots', 'hat', 'ranch', 'cattle', 'mule', 'wyattearp',
-            'buffalobill', 'ponyexpress', 'jessejames', 'whip', 'highnoon',
-            'gunfight'
+        'cowboy', 'western', 'wildbill', 'billythekid', 'winchester',
+        'horse', 'revolver', 'saloon', 'saddle', 'tombstone', 'noose',
+        'gallows', 'boots', 'hat', 'ranch', 'cattle', 'mule', 'wyattearp',
+        'buffalobill', 'ponyexpress', 'jessejames', 'whip', 'highnoon',
+        'gunfight'
     ],
-    idList: [
-            'wins', 'losses', 'chances', 'letters-used',
-            'guess-word', 'win-lose'
-    ],
+    randomWord: '',
+    placeholderWord: [],
+    numIncorrectGuesses: 0,
+    lettersUsed: [],
+    gameWon: false,
+    gameLost: false,
+    keyInput: '',
 
-    // Set the divs and their IDs
-    gameDisplay: function() {
-        var displayDivs = document.getElementById('game');
-        for (var i = 0; i < this.idList.length; i++) {
-          var createDiv = document.createElement('div');
-          createDiv.innerHTML = '<div class="text-center" id="' + this.idList[i] + '"></p>';
-          displayDivs.appendChild(createDiv);
-        };
-        document.getElementById('win-lose').innerHTML = '';
-    },
-
-    // Displays the blank lines for the word to be guessed
     blankLines: function(placeholder) {
         document.getElementById('guess-word').innerHTML = placeholder;
     },
 
-    // Stats display functions
-    stats: function(wins, losses, numIncorrectGuesses, lettersUsed) {
+    setWinLoseHtml: function(winLoseReset) {
+      document.getElementById('win-lose').innerHTML = winLoseReset;
+    },
+
+    pickWord: function() {
+      this.randomWord = this.wordBank[
+          Math.floor(Math.random() * this.wordBank.length)
+      ];
+    },
+
+    createPlaceholder: function() {
+        for (var i = 0; i < this.randomWord.length; i++) {
+            this.placeholderWord.push('__');
+        };
+        this.blankLines(this.placeholderWord.join(' '));
+    },
+
+    stats: function() {
         document.getElementById('wins').innerHTML =
-            '<p>Wins: ' + wins +'</p>';
+            '<p>Wins: ' + this.wins +'</p>';
         document.getElementById('losses').innerHTML =
-            '<p>Losses: ' + losses +'</p>';
+            '<p>Losses: ' + this.losses +'</p>';
         document.getElementById('chances').innerHTML =
-            '<p>Chances remaining: ' + (this.chances - numIncorrectGuesses) + '</p>';
+            '<p>Chances remaining: ' +
+            (this.chances - this.numIncorrectGuesses) + '</p>';
         document.getElementById('letters-used').innerHTML =
-            '<p>Letters Used so far: ' + lettersUsed.join(' ') + '</p>';
+            '<p>Letters Used so far: ' + this.lettersUsed.join(' ') + '</p>';
     },
 
-    // End Game display functions
-    endGameWin: function() {
-        document.getElementById('win-lose').innerHTML =
-            '<h2 class="pop-up text-center">YOU WIN!</h2>';
-    },
-    endGameLose: function() {
-        document.getElementById('win-lose').innerHTML =
-            '<h2 class="pop-up text-center">YOU LOSE!</h2>';
-    },
-
-    // Game management functions
     startGame: function() {
-        this.gameDisplay();
+        this.pickWord();
+        this.createPlaceholder();
+        this.stats();
+    },
 
-        var randomWord = this.wordBank[
-              Math.floor(Math.random() * this.wordBank.length)
-            ],
-            placeholderWord = [],
-            lettersUsed = [],
-            numIncorrectGuesses = 0;
-
-        // Create letter blanks in placeholderWord array
-        for (var i = 0; i < randomWord.length; i++) {
-            placeholderWord.push('__');
-
-        }
-        this.blankLines(placeholderWord.join(' '));
-
-        // Display game stats
-        this.stats(this.wins, this.losses, numIncorrectGuesses, lettersUsed);
-
-        // Game play action
-        document.onkeyup = function (event) {
-            var input = String.fromCharCode(event.keyCode).toLowerCase();
-
-            // If statement to determine if key press is a letter or not
-            if(input.match(/^[A-Za-z]+$/)) {
-                // Code block to swap out correct guesses and log incorrect guesses
-                if (randomWord.indexOf(input) !== -1) {
-                    for (var i = 0; i < randomWord.length; i++) {
-                        if (randomWord[i] === input) {
-                            placeholderWord[i] = input.toUpperCase();
-                        };
-                    };
-                    hangman.blankLines(placeholderWord.join(' '));
-                } else if (lettersUsed.indexOf(input) === -1) {
-                    lettersUsed.push(input);
-                    numIncorrectGuesses++;
-                };
-
-                // Updated stats ouput
-                hangman.stats(hangman.wins, hangman.losses, numIncorrectGuesses, lettersUsed);
-
-                // End game win/lose if statements
-                if (placeholderWord.join('').toLowerCase() === randomWord) {
-                    hangman.wins++;
-                    hangman.playWinAudio();
-                    hangman.endGameWin();
-                    hangman.restart();
-                } else if ((numIncorrectGuesses) >= hangman.chances) {
-                    hangman.losses++;
-                    hangman.playLoseAudio();
-                    hangman.endGameLose();
-                    hangman.restart();
+    checkAndUpdatePlaceholder: function() {
+        if (this.randomWord.indexOf(this.keyInput) !== -1) {
+            for (var i = 0; i < this.randomWord.length; i++) {
+                if (this.randomWord[i] === this.keyInput) {
+                    this.placeholderWord[i] = this.keyInput.toUpperCase();
                 };
             };
+            this.blankLines(hangman.placeholderWord.join(' '));
+        } else if (this.lettersUsed.indexOf(this.keyInput) === -1) {
+            this.lettersUsed.push(this.keyInput);
+            this.numIncorrectGuesses++;
+        };
+    },
+
+    checkResult: function() {
+        if (this.placeholderWord.join('').toLowerCase() === this.randomWord) {
+            this.gameWon = true;
+            this.wins++;
+            this.playWinAudio();
+            this.setWinLoseHtml('YOU WIN!');
+        } else if ((this.numIncorrectGuesses) >= this.chances) {
+            this.losses++;
+            this.gameLost = true;
+            this.playLoseAudio();
+            this.setWinLoseHtml('YOU LOSE!');
+        };
+    },
+
+    gamePlaySession: function(event) {
+        this.keyInput = String.fromCharCode(event.keyCode).toLowerCase();
+        // If statement to determine if key press is a letter or not
+        if(this.keyInput.match(/^[A-Za-z]+$/)) {
+            this.checkAndUpdatePlaceholder();
+            this.stats();
+            this.checkResult();
         };
     },
 
     restart: function() {
-        document.onkeyup = function () {
-            hangman.gameDisplay();
-            hangman.startGame();
-        };
+        this.randomWord = '';
+        this.placeholderWord = [];
+        this.numIncorrectGuesses = 0;
+        this.lettersUsed = [];
+        this.gameWon = false;
+        this.gameLost = false;
+        this.stopWinAudio();
+        this.stopLoseAudio();
+        this.setWinLoseHtml('');
+        this.startGame();
     },
 
-    firstSong: document.getElementById('first-song'),
-    secondSong: document.getElementById('second-song'),
-
     playWinAudio: function() {
-      this.firstSong.play();
+      document.getElementById('first-song').play();
+    },
+
+    stopWinAudio: function() {
+      document.getElementById('first-song').pause();
+      document.getElementById('first-song').currentTime = 0;
     },
 
     playLoseAudio: function() {
-      this.secondSong.play();
+      document.getElementById('second-song').play();
     },
 
-    pauseWinAudio: function() {
-      this.firstSong.pause();
-    },
-
-    pauseLoseAudio: function() {
-      this.secondSong.pause();
+    stopLoseAudio: function() {
+      document.getElementById('second-song').pause();
+      document.getElementById('second-song').currentTime = 0;
     }
 };
 
 // Call of the wild object
 document.onkeyup = function (event) {
-    hangman.startGame();
+    if (hangman.randomWord === '') {
+        hangman.startGame();
+    } else if ((hangman.gameWon || hangman.gameLost) === true){
+        hangman.restart();
+    } else {
+        hangman.gamePlaySession(event);
+    };
 };
