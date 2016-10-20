@@ -13,3 +13,4 @@ You will find the following extra credit attempts:
 * A different Ennio Morricone song plays with a win or loss
     * Songs start off slowly
 * A special font was imported for headings and the jumbotron
+* Mobile responsive with Bootstrap
