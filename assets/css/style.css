@@ -12,7 +12,7 @@ h1, h2, h3, .lead {
 }
 
 .jumbotron {
-  background-color: brown;
+  background-color: #723a21;
 }
 
 .console {
@@ -24,7 +24,7 @@ h1, h2, h3, .lead {
 #win-lose {
   padding: 0;
   margin: 4px;
-    background-color: brown;
+    background-color: #723a21;
     color: gold;
     border-radius: 40%;
 }

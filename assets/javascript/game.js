@@ -3,11 +3,11 @@ var hangman = {
     wins: 0,
     losses: 0,
     wordBank: [
-        'cowboy', 'western', 'wildbill', 'billythekid', 'winchester',
+        'cowboy', 'western', 'peacemaker', 'lawman', 'winchester',
         'horse', 'revolver', 'saloon', 'saddle', 'tombstone', 'noose',
-        'gallows', 'boots', 'hat', 'ranch', 'cattle', 'mule', 'wyattearp',
-        'buffalobill', 'ponyexpress', 'jessejames', 'whip', 'highnoon',
-        'gunfight'
+        'gallows', 'boots', 'hat', 'ranch', 'cattle', 'mule', 'howdy',
+        'giddyup', 'lasso', 'locomotive', 'whip', 'horseshoes',
+        'gunfight', 'buckaroo', 'livestock', 'dagnabit', 'corral', 'sheriff'
     ],
     randomWord: '',
     placeholderWord: [],
@@ -35,6 +35,7 @@ var hangman = {
         for (var i = 0; i < this.randomWord.length; i++) {
             this.placeholderWord.push('__');
         };
+
         this.blankLines(this.placeholderWord.join(' '));
     },
 
@@ -63,6 +64,7 @@ var hangman = {
                     this.placeholderWord[i] = this.keyInput.toUpperCase();
                 };
             };
+
             this.blankLines(hangman.placeholderWord.join(' '));
         } else if (this.lettersUsed.indexOf(this.keyInput) === -1) {
             this.lettersUsed.push(this.keyInput);
@@ -72,21 +74,21 @@ var hangman = {
 
     checkResult: function() {
         if (this.placeholderWord.join('').toLowerCase() === this.randomWord) {
-            this.gameWon = true;
             this.wins++;
-            this.playWinAudio();
+            this.gameWon = true;
+            this.Audio('first-song', 'on');
             this.setWinLoseHtml('YOU WIN!');
         } else if ((this.numIncorrectGuesses) >= this.chances) {
             this.losses++;
             this.gameLost = true;
-            this.playLoseAudio();
+            this.Audio('second-song', 'on');
             this.setWinLoseHtml('YOU LOSE!');
         };
     },
 
     gamePlaySession: function(event) {
         this.keyInput = String.fromCharCode(event.keyCode).toLowerCase();
-        // If statement to determine if key press is a letter or not
+
         if(this.keyInput.match(/^[A-Za-z]+$/)) {
             this.checkAndUpdatePlaceholder();
             this.stats();
@@ -101,33 +103,26 @@ var hangman = {
         this.lettersUsed = [];
         this.gameWon = false;
         this.gameLost = false;
-        this.stopWinAudio();
-        this.stopLoseAudio();
+        this.Audio('first-song', 'off');
+        this.Audio('second-song', 'off');
         this.setWinLoseHtml('');
         this.startGame();
     },
 
-    playWinAudio: function() {
-      document.getElementById('first-song').play();
-    },
+    Audio: function(firstOrSecondSong, onOff) {
+        var song = document.getElementById(firstOrSecondSong);
 
-    stopWinAudio: function() {
-      document.getElementById('first-song').pause();
-      document.getElementById('first-song').currentTime = 0;
-    },
-
-    playLoseAudio: function() {
-      document.getElementById('second-song').play();
-    },
-
-    stopLoseAudio: function() {
-      document.getElementById('second-song').pause();
-      document.getElementById('second-song').currentTime = 0;
+        if (onOff === 'on') {
+            song.play();
+        } else {
+            song.pause();
+            song.currentTime = 0;
+        };
     }
 };
 
 // Call of the wild object
-document.onkeyup = function (event) {
+document.onkeyup = function(event) {
     if (hangman.randomWord === '') {
         hangman.startGame();
     } else if ((hangman.gameWon || hangman.gameLost) === true){
